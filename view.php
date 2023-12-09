@@ -1,3 +1,13 @@
+<?php 
+    include './config/Database.php';
+    include './class/Articles.php';
+
+    $database = new Database();
+    $conn = $database->getConnection();
+
+    $articles = new Articles($conn);
+    $article = isset($_GET['id']) ? $articles->getArticleById($_GET['id']) : [];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,24 +23,17 @@
         <div id="blog" class="row mt-3">
             <div class="col-md-10 blogShort border-bottom">
                 <h3>
-                    <h2 class="text-primary">HTML</h2>
+                    <h2 class="text-primary"><?= htmlspecialchars($article['title']) ?></h2>
                 </h3>
-                <em><strong>Published on</strong>: 30/12</em>
+                <em><strong>Published on</strong>: <?= htmlspecialchars($article['created']) ?></em>
                 <em>
                     <strong>Category:</strong>
-                    <a href="#">HTML</a>
+                    <a href="#"><?= htmlspecialchars($article['name']) ?></a>
                 </em>
                 <br><br>
                 <article>
                     <p>
-                    Java is a general-purpose programming language that is class-based, object-oriented, 
-                    and designed to have as few implementation dependencies as possible. 
-                    It is intended to let application developers write once, run anywhere (WORA),
-                    [15] meaning that compiled Java code can run on all platforms that support Java without the 
-                    need for recompilation.[16] Java applications are typically compiled to bytecode that can 
-                    run on any Java virtual machine (JVM) regardless of the underlying computer architecture. 
-                    The syntax of Java is similar to C and C++, but it has fewer low-level facilities than 
-                    either of them. As of 2019, Java was one of the...
+                        <?= htmlspecialchars($article['message']) ?>
                     </p>
                 </article>
             </div>

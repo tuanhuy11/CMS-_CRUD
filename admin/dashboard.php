@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if (!isset($_SESSION['isLogined']) || !$_SESSION['isLogined']) {
+        header('Location: login.php');
+    }
 ?>
 
 <!DOCTYPE html>

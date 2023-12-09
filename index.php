@@ -1,3 +1,14 @@
+<?php 
+    include './config/Database.php';
+    include './class/Articles.php';
+
+    $database = new Database();
+    $conn = $database->getConnection();
+
+    $articles = new Articles($conn);
+    $articlesList =  $articles->getArticles();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,54 +22,25 @@
     <?php include './header.php' ?>
     <div class="container">
         <div id="blog" class="row mt-3">
-            <div class="col-md-10 blogShort border-bottom">
-                <h3>
-                    <a href="./view.php?id=" class="li">HTML</a>
-                </h3>
-                <em><strong>Published on</strong>: 30/12</em>
-                <em>
-                    <strong>Category:</strong>
-                    <a href="#">HTML</a>
-                </em>
-                <br><br>
-                <article>
-                    <p>
-                    Java is a general-purpose programming language that is class-based, object-oriented, 
-                    and designed to have as few implementation dependencies as possible. 
-                    It is intended to let application developers write once, run anywhere (WORA),
-                    [15] meaning that compiled Java code can run on all platforms that support Java without the 
-                    need for recompilation.[16] Java applications are typically compiled to bytecode that can 
-                    run on any Java virtual machine (JVM) regardless of the underlying computer architecture. 
-                    The syntax of Java is similar to C and C++, but it has fewer low-level facilities than 
-                    either of them. As of 2019, Java was one of the...
-                    </p>
-                </article>
-                <a class="btn btn-primary btn-sm float-end mb-3" href="./view.php?id=">READ MORE</a>
-            </div>
-            <div class="col-md-10 blogShort border-bottom">
-                <h3>
-                    <a href="./view.php?id=" class="li">Java</a>
-                </h3>
-                <em><strong>Published on</strong>: 30/12</em>
-                <em>
-                    <strong>Category:</strong>
-                    <a href="#">HTML</a>
-                </em>
-                <br><br>
-                <article>
-                    <p>
-                    Java is a general-purpose programming language that is class-based, object-oriented, 
-                    and designed to have as few implementation dependencies as possible. 
-                    It is intended to let application developers write once, run anywhere (WORA),
-                    [15] meaning that compiled Java code can run on all platforms that support Java without the 
-                    need for recompilation.[16] Java applications are typically compiled to bytecode that can 
-                    run on any Java virtual machine (JVM) regardless of the underlying computer architecture. 
-                    The syntax of Java is similar to C and C++, but it has fewer low-level facilities than 
-                    either of them. As of 2019, Java was one of the...
-                    </p>
-                </article>
-                <a class="btn btn-primary btn-sm float-end mb-3" href="./view.php?id=">READ MORE</a>
-            </div>
+            <?php foreach($articlesList as $article):?>
+                <div class="col-md-10 blogShort border-bottom">
+                    <h3>
+                        <a href="./view.php?id=<?= $article['id'] ?>" class="li"><?= htmlspecialchars($article['title']) ?></a>
+                    </h3>
+                    <em><strong>Published on</strong>: <?= htmlspecialchars( $article['created']) ?></em>
+                    <em>
+                        <strong>Category:</strong>
+                        <a href="#"><?= htmlspecialchars($article['name']) ?></a>
+                    </em>
+                    <br><br>
+                    <article>
+                        <p>
+                            <?= htmlspecialchars($articles->formatMessage($article['message'], 100)) ?>
+                        </p>
+                    </article>
+                    <a class="btn btn-primary btn-sm float-end mb-3" href="./view.php?id=<?= $article['id'] ?>">READ MORE</a>
+                </div>
+            <?php endforeach?>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>

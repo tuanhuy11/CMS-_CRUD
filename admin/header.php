@@ -25,7 +25,7 @@
                         Welcome to Huy
                     </li>
                     <li class="nav-item fw-light">
-                        <a href="" class="btn btn-primary btn-sm">Logout</a>
+                        <a href="handle_logout.php" class="btn btn-primary btn-sm">Logout</a>
                     </li>
                 </ul>
             </div>

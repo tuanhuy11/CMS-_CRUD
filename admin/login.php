@@ -1,3 +1,9 @@
+<?php 
+    session_start();
+    if (isset($_SESSION['isLogined']) && $_SESSION['isLogined']) {
+        header('Location: dashboard.php');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +36,10 @@
                     <div class="panel-title">Admin In</div>                        
                 </div> 
                 <div class="panel-body mt-3" >
-                    <form id="loginform" class="form-horizontal" role="form" method="POST" action="">                                    
+                    <form id="loginform" class="form-horizontal" role="form" method="POST" action="./handle_login.php">                                    
+                        <?php if(isset($_SESSION['errorMessage'])): ?>
+                            <span class="text-danger"><?= $_SESSION['errorMessage'] ?></span>
+                        <?php endif ?>
                         <div style="margin-bottom: 25px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <input type="text" class="form-control" id="email" name="email" placeholder="email" style="background:white;" required>                                        
@@ -42,12 +51,6 @@
                         <div style="margin-top:10px" class="form-group">                               
                             <div class="col-sm-12 controls">
                                 <input type="submit" name="login" value="Login" class="btn btn-success">						  
-                            </div>						
-                        </div>	
-                        <div style="margin-top:10px" class="form-group">                               
-                            <div class="col-sm-12 controls">
-                            User: admin@phpzag.com<br>
-                            password:123				  
                             </div>						
                         </div>	
                     </form>   
