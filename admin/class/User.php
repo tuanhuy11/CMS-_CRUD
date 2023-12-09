@@ -22,7 +22,7 @@
         }
 
         public function login() {
-            $query = 'select * from cms_user where email = :email and password = :password';
+            $query = 'select * from cms_user where email = :email';
             $data = [
                 'email' => $this->email,
                 'password' => $this->password
@@ -30,7 +30,11 @@
             try {
                 $stm = $this->conn->prepare($query);
                 $stm->execute($data);
-                return $stm->fetch();
+                $user = $stm->fetch();
+                if ($user && password_verify($this->password, $user['password'])) {
+                    return $user;
+                }
+                return [];
             } catch (PDOException $e) {
                 echo $e->getMessage();
             }
