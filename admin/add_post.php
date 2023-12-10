@@ -1,5 +1,20 @@
 <?php 
     session_start();
+    include_once 'config/Database.php';
+    include_once 'class/User.php';
+    include_once 'class/Post.php';
+    include_once 'class/Category.php';
+
+$database = new Database();
+$db = $database->getConnection();
+$post = new Post($db);
+if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['savePost'])){
+	$post->updateInsert();
+    header('Location:posts.php');
+}
+$nameCategory=$post->getCategory();
+$id=$_GET['id'] ?? null;
+$dataPosts=$post->getPosts();
 ?>
 
 <!DOCTYPE html>
@@ -29,31 +44,39 @@
                         <form method="post" id="postForm">							
                             <div class="form-group mb-3">
                                 <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" value="" placeholder="Post title.." required>							
+                                <input type="text" class="form-control" id="title" name="title" value="<?= !empty($dataPosts)? $dataPosts['title']: null ?>" placeholder="Post title.." required>							
                             </div>
                             
                             <div class="form-group mb-3">
                                 <label for="lastname" class="form-label">Message</label>							
-                                <textarea class="form-control" rows="5" id="message" name="message" placeholder="Post message.." required></textarea>					
+                                <textarea class="form-control" rows="5" id="message" name="message" placeholder="Post message.." required><?=!empty($dataPosts)? $dataPosts['message'] : null?></textarea>					
                             </div>	
                             <div class="form-group mb-3">
                                 <label for="sel1">Category</label>
                                 <select class="form-control" id="category" name="category" required>
-                                    <option value="0" hidden></option>
-            						<option value="1">html</option>
-            						<option value="2">Java</option>
+                                        <?php if(!empty($nameCategory)): ?>
+                                    <?php foreach($nameCategory as $value): ?>
+                                    <?php if($value['name']==$dataPosts['name']): ?>
+                                        <option value="<?= $dataPosts['name'] ?>" selected><?= $dataPosts['name'] ?></option>
+                                        <?php else: ?>
+                                            <option value="<?=$value['name'] ?>"><?=$value['name'] ?></option>
+                                    <?php endif; ?>
+                                    
+                                        
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>			
                                 </select>
                             </div>						
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" required>
+                                <input type="radio" name="status" id="publish" value="published" <?= !empty($dataPosts) ?(($dataPosts['status']=='published') ?'checked' :null) : null ?> >
                                 <label class="form-check-label" for="inlineRadio1">Publish</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" required>
+                                <input type="radio" name="status" id="draft" value="draft" <?=!empty($dataPosts) ?(($dataPosts['status']=='draft') ?'checked' :null) : null ?>>
                                 <label class="form-check-label" for="inlineRadio2">Draft</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" required>
+                                <input type="radio" name="status" id="archived" value="archived" <?=!empty($dataPosts) ?(($dataPosts['status']=='archived') ?'checked' :null) : null ?>>
                                 <label class="form-check-label" for="inlineRadio3">Archive</label>
                             </div>	
                             <div class="mt-3">
