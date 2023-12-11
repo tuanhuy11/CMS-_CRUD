@@ -1,12 +1,13 @@
 <?php
-session_start();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<?php
+    session_start();
+    if (!isset($_SESSION['isLogined']) || !$_SESSION['isLogined']) {
+        header('Location: login.php');
+    }
     include './config/Database.php';
     global $conn;
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -24,8 +24,7 @@
         public function login() {
             $query = 'select * from cms_user where email = :email';
             $data = [
-                'email' => $this->email,
-                'password' => $this->password
+                'email' => $this->email
             ];
             try {
                 $stm = $this->conn->prepare($query);
@@ -134,6 +133,21 @@
         
                 $dataDeleted = $this->getUsers();
                 return $dataDeleted;
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+
+        public function totalUsers() {
+            $query = 'select count(*) as total from cms_user';
+            try {
+                $statement = $this->conn->prepare($query);
+                $statement->execute();
+                $data = $statement->fetch();
+                // if ($data) {
+                //     $_SESSION['total_users'] = $data['total'];
+                // }
+                return $data['total'];
             } catch (PDOException $e) {
                 echo $e->getMessage();
             }

@@ -1,14 +1,17 @@
 <?php 
     session_start();
+    if (!isset($_SESSION['isLogined']) || !$_SESSION['isLogined']) {
+        header('Location: login.php');
+    }
     include_once 'config/Database.php';
-include_once 'class/User.php';
-include_once 'class/Post.php';
-include_once 'class/Category.php';
-$database = new Database();
-$db = $database->getConnection();
+    include_once 'class/User.php';
+    include_once 'class/Post.php';
+    include_once 'class/Category.php';
+    
+    $database = new Database();
+    $db = $database->getConnection();
 
-$post = new Post($db);
-
+    $post = new Post($db);
 ?>
 <!DOCTYPE html>
 <html lang="en">

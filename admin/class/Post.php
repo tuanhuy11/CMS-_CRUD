@@ -240,7 +240,10 @@ class Post {
 		$stmt = $this->conn->prepare($sqlQuery);			
 		$stmt->execute();
 		$result = $stmt->fetch();
-		return $result['total'];	
+		// if ($result) {
+		// 	$_SESSION['total_posts'] = $result['total'];
+		// }	
+		return $result['total'];
 	}	
 }
 ?>

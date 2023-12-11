@@ -2,6 +2,8 @@
     include_once './config/Database.php';
     include_once './class/User.php';
 
+    session_start();
+
     $database = new Database();
     $db = $database -> getConnection();
 

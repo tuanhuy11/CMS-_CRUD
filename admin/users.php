@@ -1,10 +1,10 @@
 <?php 
-    session_start();
-?>
-
-<?php 
     include_once './config/Database.php';
     include_once './class/User.php';
+    session_start();
+    if (!isset($_SESSION['isLogined']) || !$_SESSION['isLogined']) {
+        header('Location: login.php');
+    }
 
     $database = new Database();
     $db = $database -> getConnection();

@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item fw-light">
-                        Welcome to Huy
+                        Welcome to <?= $_SESSION['user_name'] ?>
                     </li>
                     <li class="nav-item fw-light">
                         <a href="handle_logout.php" class="btn btn-primary btn-sm">Logout</a>
